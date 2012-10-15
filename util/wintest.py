@@ -21,7 +21,7 @@ if args[0:1] == ['test']:
     source_name = args[1]
     tar_name = source_name.rsplit('.', 1)[0]
     dir_name = tar_name.rsplit('.', 1)[0]
-    os.system('rm -fr %s %s' % (tar_name, dir_name))
+    system('rm -fr %s %s' % (tar_name, dir_name))
     system('gzip -d %s && tar -xf %s' % (source_name, tar_name))
     os.chdir(dir_name)
     os.environ.setdefault('VS90COMNTOOLS', 'C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\Common7\Tools\\')
