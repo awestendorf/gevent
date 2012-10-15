@@ -47,7 +47,7 @@ def run_many(tests, expected=None, failfast=False):
         try:
             for cmd, options in tests:
                 total += 1
-                spawn(run_one, cmd, **options)
+                spawn(run_one, cmd, **(options or {}))
             gevent.wait()
         except KeyboardInterrupt:
             try:
@@ -137,7 +137,7 @@ def full(args=None):
             tests.append((cmd, options))
 
     if sys.version_info[:2] == (2, 7):
-        tests.append(('xtest_pep8.py', [sys.executable, '-u', 'xtest_pep8.py'], None))
+        tests.append(([sys.executable, '-u', 'xtest_pep8.py'], None))
 
     return tests
 
