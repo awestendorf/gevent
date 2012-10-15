@@ -111,7 +111,7 @@ class TestQueue(TestCase):
         q = queue.Queue()
 
         def do_receive(q, evt):
-            with gevent.Timeout(0, RuntimeError())
+            with gevent.Timeout(0, RuntimeError()):
                 try:
                     result = q.get()
                     evt.set(result)
@@ -159,7 +159,7 @@ class TestQueue(TestCase):
 
     def test_two_bogus_waiters(self):
         def do_receive(q, evt):
-            with gevent.Timeout(0, RuntimeError())
+            with gevent.Timeout(0, RuntimeError()):
                 try:
                     result = q.get()
                     evt.set(result)
