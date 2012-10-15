@@ -111,12 +111,12 @@ class TestQueue(TestCase):
         q = queue.Queue()
 
         def do_receive(q, evt):
-            gevent.Timeout.start_new(0, RuntimeError())
-            try:
-                result = q.get()
-                evt.set(result)
-            except RuntimeError:
-                evt.set('timed out')
+            with gevent.Timeout(0, RuntimeError())
+                try:
+                    result = q.get()
+                    evt.set(result)
+                except RuntimeError:
+                    evt.set('timed out')
 
         evt = AsyncResult()
         gevent.spawn(do_receive, q, evt)
@@ -140,15 +140,12 @@ class TestQueue(TestCase):
             evt.set(q.get())
 
         def do_receive(q, evt):
-            timeout = gevent.Timeout.start_new(0, RuntimeError())
-            try:
+            with gevent.Timeout(0, RuntimeError()):
                 try:
                     result = q.get()
                     evt.set(result)
                 except RuntimeError:
                     evt.set('timed out')
-            finally:
-                timeout.cancel()
 
         q = queue.Queue()
         dying_evt = AsyncResult()
@@ -162,13 +159,12 @@ class TestQueue(TestCase):
 
     def test_two_bogus_waiters(self):
         def do_receive(q, evt):
-            gevent.Timeout.start_new(0, RuntimeError())
-            try:
-                result = q.get()
-                evt.set(result)
-            except RuntimeError:
-                evt.set('timed out')
-            # XXX finally = timeout
+            with gevent.Timeout(0, RuntimeError())
+                try:
+                    result = q.get()
+                    evt.set(result)
+                except RuntimeError:
+                    evt.set('timed out')
 
         q = queue.Queue()
         e1 = AsyncResult()
