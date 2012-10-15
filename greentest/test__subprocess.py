@@ -107,7 +107,6 @@ class Test(greentest.TestCase):
         finally:
             p.stdout.close()
 
-
     if sys.platform != 'win32':
 
         def test_nonblock_removed(self):
