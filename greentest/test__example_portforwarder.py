@@ -15,7 +15,10 @@ class Test(util.TestServer):
     args = ['127.0.0.1:10011', '127.0.0.1:10012']
 
     def after(self):
-        self.assertEqual(self.popen.poll(), 0)
+        if sys.platform == 'win32':
+            assert self.popen.poll() is not None
+        else:
+            self.assertEqual(self.popen.poll(), 0)
 
     def _run_all_tests(self):
         log = []
